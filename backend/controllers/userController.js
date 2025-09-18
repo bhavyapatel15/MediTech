@@ -101,34 +101,66 @@ const getProfile = async (req, res) => {
 
 //API to update user profile
 const updateProfile = async (req, res) => {
+  try {
+    const { userId, name, phone, address, dob, gender } = req.body;
+    const imageFile = req.file;
 
-    try {
-
-        const { userId, name, phone, address, dob, gender } = req.body
-        const imageFile = req.file
-
-        if (!name || !phone || !dob || !gender) {
-            return res.json({ success: false, message: "Data Missing" })
-        }
-
-        await userModel.findByIdAndUpdate(userId, { name, phone, address: JSON.parse(address), dob, gender })
-
-        if (imageFile) {
-
-            // upload image to cloudinary
-            const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" })
-            const imageURL = imageUpload.secure_url
-
-            await userModel.findByIdAndUpdate(userId, { image: imageURL })
-        }
-
-        res.json({ success: true, message: 'Profile Updated' })
-
-    } catch (error) {
-        console.log(error)
-        res.json({ success: false, message: error.message })
+    // Required fields check
+    if (!userId || !name || !phone || !dob || !gender) {
+      return res.status(400).json({ success: false, message: "Missing required fields" });
     }
-}
+
+    // --- Normalize phone number ---
+    // Remove any non-digit characters
+    let normalizedPhone = phone.toString().trim().replace(/\D/g, "");
+
+    // Handle optional prefixes:
+    // +91 or 91 (after removing non-digits becomes "91xxxxxxxxxx")
+    // leading 0 (e.g. 09876543210)
+    if (normalizedPhone.length === 12 && normalizedPhone.startsWith("91")) {
+      normalizedPhone = normalizedPhone.slice(2); // drop country code
+    } else if (normalizedPhone.length === 11 && normalizedPhone.startsWith("0")) {
+      normalizedPhone = normalizedPhone.slice(1); // drop leading zero
+    }
+
+    // Indian phone rule: exactly 10 digits and starts with 6/7/8/9
+    const indianPhoneRegex = /^[6-9]\d{9}$/;
+    if (!indianPhoneRegex.test(normalizedPhone)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Indian phone number. Must be 10 digits and start with 6,7,8 or 9"
+      });
+    }
+
+    // --- DOB validation (must be valid and not in future) ---
+    const dobDate = new Date(dob);
+    const today = new Date();
+    if (isNaN(dobDate.getTime()) || dobDate > today) {
+      return res.status(400).json({ success: false, message: "Invalid date of birth" });
+    }
+
+    // Update user profile (store normalized phone)
+    await userModel.findByIdAndUpdate(userId, {
+      name,
+      phone: normalizedPhone,
+      address: address ? JSON.parse(address) : undefined,
+      dob: dobDate,
+      gender
+    });
+
+    // Optional: update image if provided
+    if (imageFile) {
+      const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" });
+      const imageURL = imageUpload.secure_url;
+      await userModel.findByIdAndUpdate(userId, { image: imageURL });
+    }
+
+    return res.json({ success: true, message: "Profile Updated" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 // API to book appointment 
 const bookAppointment = async (req, res) => {
