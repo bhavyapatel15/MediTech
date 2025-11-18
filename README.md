@@ -189,3 +189,48 @@ MediTech/
         │   └── pages
         └── .env
 ```
+# 🧩 API Endpoints
+
+## 🚀 User Routes
+
+| Method | Endpoint                     | Description                          |
+|--------|------------------------------|--------------------------------------|
+| POST   | `/api/user/register`         | Register a new patient               |
+| POST   | `/api/user/login`            | Patient login                        |
+| GET    | `/api/user/get-profile`      | Get logged-in user profile           |
+| PUT    | `/api/user/update-profile`   | Update user profile (with image)     |
+| POST   | `/api/user/book-appointment` | Book a new appointment               |
+| GET    | `/api/user/appointments`     | List user appointments               |
+| POST   | `/api/user/cancel-appointment` | Cancel an appointment              |
+| POST   | `/api/user/payment-razorpay` | Create Razorpay order                |
+| POST   | `/api/user/verifyRazorpay`   | Verify Razorpay payment              |
+| POST   | `/api/user/payment-stripe`   | Create Stripe session                |
+| POST   | `/api/user/verifyStripe`     | Verify Stripe payment                |
+
+---
+
+## 🩺 Doctor Routes
+
+| Method | Endpoint                              | Description                       |
+|--------|----------------------------------------|-----------------------------------|
+| POST   | `/api/doctor/login`                    | Doctor login                      |
+| GET    | `/api/doctor/appointments`             | Get doctor appointments           |
+| PATCH  | `/api/doctor/change-availability`      | Toggle doctor availability        |
+| POST   | `/api/doctor/complete-appointment`     | Mark appointment as complete      |
+| GET    | `/api/doctor/dashboard`                | Doctor dashboard analytics        |
+| GET    | `/api/doctor/profile`                  | Get doctor profile                |
+| PUT    | `/api/doctor/update-profile`           | Update doctor profile             |
+
+---
+
+## 🛠️ Admin Routes
+
+| Method | Endpoint                                | Description                       |
+|--------|------------------------------------------|-----------------------------------|
+| POST   | `/api/admin/login`                       | Admin login                       |
+| POST   | `/api/admin/add-doctor`                  | Add new doctor                    |
+| GET    | `/api/admin/appointments`                | List all appointments             |
+| POST   | `/api/admin/cancel-appointment`          | Cancel an appointment             |
+| GET    | `/api/admin/all-doctors`                 | List all doctors                  |
+| PATCH  | `/api/admin/change-availability`         | Change doctor availability        |
+| GET    | `/api/admin/dashboard`                   | Admin dashboard analytics         |
