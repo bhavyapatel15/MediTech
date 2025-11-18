@@ -114,37 +114,78 @@ To set up and run this project locally:
 
 2. **Install Dependencies**:
    ```bash
+   cd backend
    npm install
-   cd client
+
+   cd ../frontend
+   npm install
+
+   cd ../admin
    npm install
    ```
-
+    
 3. **Environment Variables**:
-   - Create a `.env` file in the root directory and add the following:
+   - Create a `.env` file in the /backend and add the following:
      ```env
-     MONGO_URI=your_mongodb_connection_string
-     JWT_SECRET=your_jwt_secret
-     STRIPE_API_KEY=your_stripe_api_key
-     RAZORPAY_API_KEY=your_razorpay_api_key
+      MONGO_URI=your_mongodb_connection_string
+      JWT_SECRET=your_jwt_secret
+      STRIPE_SECRET_KEY=your_stripe_secret
+      RAZORPAY_KEY_ID=your_razorpay_key
+      RAZORPAY_KEY_SECRET=your_razorpay_secret
+      CURRENCY=INR
+      ADMIN_EMAIL=admin@example.com
+      ADMIN_PASSWORD=adminpassword
      ```
+    - Create a `.env` file in the /frontend and add the following:
+       ```env
+         VITE_BACKEND_URL=http://localhost:4000
+       ```
 
+     - Create a `.env` file in the /admin and add the following:
+     ```env
+         VITE_BACKEND_URL=http://localhost:4000
+     ```
 4. **Run the Application**:
+   
+   Run backend server: 
+   ```bash
+   npm run server
+   ```
+   The backend API will run on http://localhost:4000
+
+   Run frontend: 
    ```bash
    npm run dev
    ```
+   The backend API will run on http://localhost:5173
 
+   Run admin frontend: 
+   ```bash
+   npm run dev
+   ```
+   The backend API will run on http://localhost:5174
+   
 ## 📦 Folder Structure
 
 ```plaintext
 MediTech/
-├── client/          # Frontend (React.js)
-├── server/          # Backend (Node.js, Express.js)
-├── models/          # MongoDB Schemas
-├── controllers/     # API Controllers
-├── routes/          # API Routes
-├── middleware/      # Authentication and Error Handling
-├── config/          # Configuration Files
-├── utils/           # Utility Functions
-├── public/          # Static Files
-└── .env             # Environment Variables
+    ├── admin/
+    │   ├── src/
+    │   │   ├── components
+    │   │   └── pages
+    │   └── .env
+    ├── backend/
+    │   ├── config
+    │   ├── controllers
+    │   ├── middlewares
+    │   ├── models
+    │   ├── routes
+    │   ├── views
+    │   ├── server.js
+    │   └── .env
+    └── frontend/
+        ├── src/
+        │   ├── components
+        │   └── pages
+        └── .env
 ```
