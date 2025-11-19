@@ -204,8 +204,6 @@ MediTech/
 | POST   | `/api/user/cancel-appointment` | Cancel an appointment              |
 | POST   | `/api/user/payment-razorpay` | Create Razorpay order                |
 | POST   | `/api/user/verifyRazorpay`   | Verify Razorpay payment              |
-| POST   | `/api/user/payment-stripe`   | Create Stripe session                |
-| POST   | `/api/user/verifyStripe`     | Verify Stripe payment                |
 
 ---
 
