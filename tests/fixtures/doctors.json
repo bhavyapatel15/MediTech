@@ -1,0 +1,4 @@
+{
+  "doc1": { "name":"Dr. Strange", "specialty":"Cardiology", "available": true, "fees": 500 },
+  "doc2": { "name":"Dr. Who", "specialty":"Dermatology", "available": false, "fees": 300 }
+}

@@ -1,0 +1,4 @@
+{
+  "userA": { "name":"Alice", "email":"alice@example.com", "password":"Passw0rd!" },
+  "userB": { "name":"Bob", "email":"bob@example.com", "password":"Passw0rd!" }
+}
